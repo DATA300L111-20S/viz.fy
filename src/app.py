@@ -2,7 +2,8 @@ import json
 from flask import Flask, request, redirect, g, render_template
 import requests
 from urllib.parse import quote
-
+import src.env as config
+#from src.env import getClientSecret, getClientID
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response.
 
@@ -10,8 +11,8 @@ from urllib.parse import quote
 app = Flask(__name__)
 
 #  Client Keys
-CLIENT_ID = "31a166032e204fbeb4dc10f77ee4d0a5"
-CLIENT_SECRET = "e28ab00020ee4ca0abc4ab2e273c93be"
+CLIENT_ID = config.getClientID()
+CLIENT_SECRET = config.getClientSecret()
 
 # Spotify URLS
 SPOTIFY_AUTH_URL = "https://accounts.spotify.com/authorize"
@@ -21,7 +22,7 @@ API_VERSION = "v1"
 SPOTIFY_API_URL = "{}/{}".format(SPOTIFY_API_BASE_URL, API_VERSION)
 
 # Server-side Parameters
-CLIENT_SIDE_URL = "http://127.0.0.1"
+CLIENT_SIDE_URL = config.getClientHost()
 PORT = 8080
 REDIRECT_URI = "{}:{}/callback/q".format(CLIENT_SIDE_URL, PORT)
 SCOPE = "playlist-modify-public playlist-modify-private"
