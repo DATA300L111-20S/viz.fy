@@ -134,5 +134,10 @@ dmypy.json
 # csv
 .csv
 
-#compiled binaries
+# compiled binaries
 .pyc
+
+# PyCharm
+.DS_Store
+.idea/
+ 
