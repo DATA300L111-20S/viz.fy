@@ -39,11 +39,17 @@ with open('top200TracksRaw.json', 'w') as top200rawJSON_write:
 
 #Above Generates a Json File containing basic track information. (artist, position, etc.)
 
-#time to do a whole fucking meal of calls
 with open('top200TracksRaw.json') as top200rawJSON_read:
     data = json.load(top200rawJSON_read)
     top200rawJSON_read.close()
 
+#generate golden json file
+
+#generate golden csv file
+
+#generate golden json obj
+
+#research getting info on genre.
 
 def main():
     return 0
