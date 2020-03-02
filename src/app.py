@@ -3,10 +3,10 @@ from flask import Flask, request, redirect, g, render_template
 import requests
 from urllib.parse import quote
 import src.env as config
-#from src.env import getClientSecret, getClientID
+
+
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response.
-
 
 app = Flask(__name__)
 
