@@ -3,10 +3,10 @@ from flask import Flask, request, redirect, g, render_template
 import requests
 from urllib.parse import quote
 import src.env as config
-#from src.env import getClientSecret, getClientID
+
+
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response.
-
 
 app = Flask(__name__)
 
@@ -39,6 +39,10 @@ auth_query_parameters = {
     "client_id": CLIENT_ID
 }
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('error.html'), 404
 
 @app.route("/")
 def index():
@@ -99,4 +103,8 @@ def callback():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=PORT)
+    app.config['TEMPLATES_AUTO_RELOAD']=True
+    app.config['DEBUG'] = True
+    app.config['ENV'] = 'development'
+    print(app.config)
+    app.run(debug=True, port=PORT, use_reloader=True)
