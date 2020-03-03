@@ -4,7 +4,6 @@ import requests
 from urllib.parse import quote
 import src.env as config
 
-
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response.
 
@@ -39,9 +38,9 @@ auth_query_parameters = {
     "client_id": CLIENT_ID
 }
 
+#Handle not founds
 @app.errorhandler(404)
 def page_not_found(e):
-    # note that we set the 404 status explicitly
     return render_template('error.html'), 404
 
 @app.route("/")
@@ -68,14 +67,11 @@ def callback():
     # Auth Step 5: Tokens are Returned to Application
     response_data = json.loads(post_request.text)
 
+    #Page-Reload or Non-Login
     if response_data == {'error': 'invalid_grant', 'error_description': 'Invalid authorization code'}:
         url_args = "&".join(["{}={}".format(key, quote(val)) for key, val in auth_query_parameters.items()])
         auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
         return redirect(auth_url)
-
-    else:
-        print("AYYYYYYY")
-
 
     access_token = response_data["access_token"]
 
