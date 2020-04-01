@@ -1,8 +1,9 @@
 import json
-from flask import Flask, request, redirect, g, render_template
+from flask import Flask, request, redirect, g, render_template, send_from_directory
 import requests
+import os
 from urllib.parse import quote
-import src.env as config
+import env as config
 
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response.
@@ -37,6 +38,11 @@ auth_query_parameters = {
     # "show_dialog": SHOW_DIALOG_str,
     "client_id": CLIENT_ID
 }
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'images/favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 #Handle not founds
 @app.errorhandler(404)
