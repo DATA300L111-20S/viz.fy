@@ -109,13 +109,3 @@ def generateGoldenDataFiles(authorization_header):
     top200rawJSON_read.close()
 
     return goldenTrackData
-#generate golden json file
-
-#generate golden csv file
-
-#generate golden json obj
-
-#research getting info on genre.
-
-def main():
-    return 0
