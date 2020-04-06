@@ -5,8 +5,6 @@ import os
 from urllib.parse import quote
 import env as config
 from cachetools import TTLCache
-
-#import generateAudioData from spotiPY
 from spotiPY import generateRawDataFiles, generateGoldenDataFiles
 
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
@@ -39,21 +37,15 @@ auth_query_parameters = {
     "response_type": "code",
     "redirect_uri": REDIRECT_URI,
     "scope": SCOPE,
-    # "state": STATE,
-    # "show_dialog": SHOW_DIALOG_str,
     "client_id": CLIENT_ID
 }
-
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'images/favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 #Handle not founds
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html'), 404
 
+# Home Route
 @app.route("/")
 def index():
     # Auth Step 1: Authorization
@@ -61,7 +53,7 @@ def index():
     auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
     return redirect(auth_url)
 
-
+# call back - auth route
 @app.route("/callback/q")
 def callback():
     # Auth Step 4: Requests refresh and access tokens
@@ -105,12 +97,17 @@ def callback():
 
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"]
+
+    # ============= VIZ WORK START ====================
+
     generateRawFilesFromCache()
     generateGoldenFilesFromCache(authorization_header)
     print(display_arr)
 
     return render_template("index.html", sorted_array=display_arr)
 
+
+#Impliments a cache to only generate files
 def generateRawFilesFromCache():
     try:
         glove = cache['RAW_FILES']
@@ -119,6 +116,8 @@ def generateRawFilesFromCache():
         print('Cache Miss . . . @generateRawFilesFromCache()')
         cache['RAW_FILES'] = generateRawDataFiles()
 
+
+#Impliments a cache to only generate files
 def generateGoldenFilesFromCache(authorization_header):
     try:
         glove = cache['GOLDEN_FILES']
@@ -127,6 +126,7 @@ def generateGoldenFilesFromCache(authorization_header):
         print('Cache Miss . . . @generateGoldenFilesFromCache()')
         cache['GOLDEN_FILES'] = generateGoldenDataFiles(authorization_header)
 
+#App Running Config
 if __name__ == "__main__":
     app.config['TEMPLATES_AUTO_RELOAD']=True
     app.config['DEBUG'] = True
