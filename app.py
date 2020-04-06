@@ -4,11 +4,16 @@ import requests
 import os
 from urllib.parse import quote
 import env as config
+from cachetools import TTLCache
+
+#import generateAudioData from spotiPY
+from spotiPY import generateRawDataFiles, generateGoldenDataFiles
 
 # Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response.
 
 app = Flask(__name__)
+cache = TTLCache(maxsize=10, ttl=86400)
 
 #  Client Keys
 CLIENT_ID = config.getClientID()
@@ -100,9 +105,27 @@ def callback():
 
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"]
+    generateRawFilesFromCache()
+    generateGoldenFilesFromCache(authorization_header)
     print(display_arr)
+
     return render_template("index.html", sorted_array=display_arr)
 
+def generateRawFilesFromCache():
+    try:
+        glove = cache['RAW_FILES']
+        print('Cache Hit . . . @generateRawFilesFromCache()')
+    except Exception as e:
+        print('Cache Miss . . . @generateRawFilesFromCache()')
+        cache['RAW_FILES'] = generateRawDataFiles()
+
+def generateGoldenFilesFromCache(authorization_header):
+    try:
+        glove = cache['GOLDEN_FILES']
+        print('Cache Hit . . . @generateGoldenFilesFromCache()')
+    except Exception as e:
+        print('Cache Miss . . . @generateGoldenFilesFromCache()')
+        cache['GOLDEN_FILES'] = generateGoldenDataFiles(authorization_header)
 
 if __name__ == "__main__":
     app.config['TEMPLATES_AUTO_RELOAD']=True
