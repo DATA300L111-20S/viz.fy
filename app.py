@@ -1,7 +1,6 @@
 import json
-from flask import Flask, request, redirect, g, render_template, send_from_directory
+from flask import Flask, request, redirect, render_template
 import requests
-import os
 from urllib.parse import quote
 import env as config
 from cachetools import TTLCache
@@ -26,6 +25,7 @@ SPOTIFY_API_URL = "{}/{}".format(SPOTIFY_API_BASE_URL, API_VERSION)
 
 # Server-side Parameters
 CLIENT_SIDE_URL = config.getClientHost()
+
 PORT = 8080
 REDIRECT_URI = "{}:{}/callback/q".format(CLIENT_SIDE_URL, PORT)
 SCOPE = "playlist-modify-public playlist-modify-private"
@@ -40,10 +40,12 @@ auth_query_parameters = {
     "client_id": CLIENT_ID
 }
 
-#Handle not founds
+
+# Handle not founds
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html'), 404
+
 
 # Home Route
 @app.route("/")
@@ -52,6 +54,7 @@ def index():
     url_args = "&".join(["{}={}".format(key, quote(val)) for key, val in auth_query_parameters.items()])
     auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
     return redirect(auth_url)
+
 
 # call back - auth route
 @app.route("/callback/q")
@@ -70,7 +73,7 @@ def callback():
     # Auth Step 5: Tokens are Returned to Application
     response_data = json.loads(post_request.text)
 
-    #Page-Reload or Non-Login
+    # Page-Reload or Non-Login
     if response_data == {'error': 'invalid_grant', 'error_description': 'Invalid authorization code'}:
         url_args = "&".join(["{}={}".format(key, quote(val)) for key, val in auth_query_parameters.items()])
         auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
@@ -102,34 +105,41 @@ def callback():
 
     generateRawFilesFromCache()
     generateGoldenFilesFromCache(authorization_header)
-    print(display_arr)
 
     return render_template("index.html", sorted_array=display_arr)
 
 
-#Impliments a cache to only generate files
+# Impliments a cache to only generate files once
 def generateRawFilesFromCache():
     try:
         glove = cache['RAW_FILES']
         print('Cache Hit . . . @generateRawFilesFromCache()')
     except Exception as e:
         print('Cache Miss . . . @generateRawFilesFromCache()')
+        print('Generating Cache Table for RAW_FILES: [TTL = '+str(cache.ttl)
+              + ' seconds = '+str((cache.ttl/60)/60)
+              + ' hours]')
+
         cache['RAW_FILES'] = generateRawDataFiles()
 
 
-#Impliments a cache to only generate files
+# Impliments a cache to only generate files once
 def generateGoldenFilesFromCache(authorization_header):
     try:
         glove = cache['GOLDEN_FILES']
         print('Cache Hit . . . @generateGoldenFilesFromCache()')
     except Exception as e:
         print('Cache Miss . . . @generateGoldenFilesFromCache()')
+        print('Generating Cache Table for GOLDEN_FILES: [TTL = ' + str(cache.ttl)
+              + ' seconds = ' + str((cache.ttl / 60) / 60)
+              + ' hours]')
+
         cache['GOLDEN_FILES'] = generateGoldenDataFiles(authorization_header)
 
-#App Running Config
+
+# App Running Config
 if __name__ == "__main__":
     app.config['TEMPLATES_AUTO_RELOAD']=True
     app.config['DEBUG'] = True
     app.config['ENV'] = 'development'
-    print(app.config)
     app.run(debug=True, port=PORT, use_reloader=True)
