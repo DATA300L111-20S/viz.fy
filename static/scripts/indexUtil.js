@@ -1,9 +1,7 @@
 function init() {
-    console.log('I EXIST');
-    console.log('cunt');
     bindReloadTimer();
 }
-git
+
 function bindReloadTimer() {
     var minutes = 0;
     var seconds = 0;

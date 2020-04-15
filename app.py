@@ -6,7 +6,8 @@ import env as config
 from cachetools import TTLCache
 from spotiPY import generateRawDataFiles, generateGoldenDataFiles
 
-# Authentication Steps, paramaters, and responses are defined at https://developer.spotify.com/web-api/authorization-guide/
+# Authentication Steps, paramaters, and responses are defined at:
+# https://developer.spotify.com/web-api/authorization-guide/
 # Visit this url to see all the steps, parameters, and expected response.
 
 app = Flask(__name__)
@@ -45,6 +46,11 @@ auth_query_parameters = {
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html'), 404
+
+
+@app.route("/about")
+def about():
+    return render_template('aboot.html')
 
 
 # Home Route
@@ -109,7 +115,7 @@ def callback():
     return render_template("index.html", sorted_array=display_arr)
 
 
-# Impliments a cache to only generate files once
+# Implements a cache to only generate files once
 def generateRawFilesFromCache():
     try:
         glove = cache['RAW_FILES']
@@ -123,7 +129,7 @@ def generateRawFilesFromCache():
         cache['RAW_FILES'] = generateRawDataFiles()
 
 
-# Impliments a cache to only generate files once
+# Implements a cache to only generate files once
 def generateGoldenFilesFromCache(authorization_header):
     try:
         glove = cache['GOLDEN_FILES']
