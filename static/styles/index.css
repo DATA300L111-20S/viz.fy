@@ -1,10 +1,15 @@
-body{
-    background: var(--spotify-dark-gray);
-}
-
-.pageSpacer{
+.pageSpacer {
     padding-top: 15px;
     padding-bottom: 15px;
 }
+
+#scatter-filter-button-container {
+    width: 29%;
+}
+
+/*#scatter-plot-container {
+    position: absolute;
+    width: 90%;
+}*/
 
 
