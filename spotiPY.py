@@ -19,13 +19,13 @@ def generateRawDataFiles():
         top200rawCSV_write.write(popOne.decode())
         top200rawCSV_write.close()
 
-    csvData = {"Tracks":[]}
+    csvData = {"Tracks": []}
     # Read raw CSV
     with open('top200TracksRaw.csv') as top200rawCSV_read:
         csvReader = csv.DictReader(top200rawCSV_read)
 
         for rows in csvReader:
-            rows['URL']= str(rows['URL']).split('/')[4]
+            rows['URL'] = str(rows['URL']).split('/')[4]
             csvData["Tracks"].append(rows)
         top200rawCSV_read.close()
 
@@ -94,6 +94,7 @@ def generateGoldenDataFiles(authorization_header):
             #if an audio feature exists. Audio features may not exist for brand new songs
             #tracks without audio features are omitted.
             if audFeat is not None:
+                tracks['Track_Name'] = tracks.pop('Track Name')
                 tracks['Position'] = int(tracks['Position'])
                 tracks['Streams'] = int(tracks['Streams'])
                 tracks['danceability'] = audFeat['danceability']
@@ -114,7 +115,14 @@ def generateGoldenDataFiles(authorization_header):
             top200GoldenJSON_write.write(json.dumps(goldenTrackData, indent=4))
             top200GoldenJSON_write.close()
 
+        with open('top200TracksD3.json', 'w') as top200GoldenJSON_write:
+            top200GoldenJSON_write.write(json.dumps(goldenTrackData['Track']))
+            top200GoldenJSON_write.close()
     top200rawJSON_read.close()
+
+    with open('top200TracksGolden.json', 'w') as top200GoldenJSON_write:
+        top200GoldenJSON_write.write(json.dumps(goldenTrackData, indent=4))
+        top200GoldenJSON_write.close()
 
     # Return is for code completion
     return goldenTrackData

@@ -5,6 +5,7 @@ import requests
 from urllib.parse import quote
 import env as config
 from cachetools import TTLCache
+import generateSpecificData as DataBuilder
 from spotiPY import generateRawDataFiles, generateGoldenDataFiles
 
 # Authentication Steps, paramaters, and responses are defined at:
@@ -89,32 +90,20 @@ def callback():
 
     access_token = response_data["access_token"]
 
-    refresh_token = response_data["refresh_token"]
-    token_type = response_data["token_type"]
-    expires_in = response_data["expires_in"]
-
     # Auth Step 6: Use the access token to access Spotify API
     authorization_header = {"Authorization": "Bearer {}".format(access_token)}
 
     # Get profile data
-    user_profile_api_endpoint = "{}/me".format(SPOTIFY_API_URL)
-    profile_response = requests.get(user_profile_api_endpoint, headers=authorization_header)
-    profile_data = json.loads(profile_response.text)
-
-    # Get user playlist data
-    playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
-    playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
-    playlist_data = json.loads(playlists_response.text)
-
-    # Combine profile and playlist data to display
-    display_arr = [profile_data] + playlist_data["items"]
+    #Wuser_profile_api_endpoint = "{}/me".format(SPOTIFY_API_URL)
+    #profile_response = requests.get(user_profile_api_endpoint, headers=authorization_header)
+    #profile_data = json.loads(profile_response.text)
 
     # ============= VIZ WORK START ====================
 
     generateRawFilesFromCache()
     generateGoldenFilesFromCache(authorization_header)
-
-    return render_template("index.html", sorted_array=display_arr)
+    generateSpecificChartDataFromCache()
+    return render_template("index.html")
 
 
 # Implements a cache to only generate files once
@@ -145,9 +134,22 @@ def generateGoldenFilesFromCache(authorization_header):
         cache['GOLDEN_FILES'] = generateGoldenDataFiles(authorization_header)
 
 
+# Implements a cache to only generate files once
+def generateSpecificChartDataFromCache():
+    try:
+        glove = cache['CHART_FILES']
+        print('Cache Hit . . . @generateSpecificChartDataFromCache()')
+    except Exception as e:
+        print('Cache Miss . . . @generateSpecificChartDataFromCache()')
+        print('Generating Cache Table for CHART_FILES: [TTL = ' + str(cache.ttl)
+              + ' seconds = ' + str((cache.ttl / 60) / 60)
+              + ' hours]')
+        cache['GOLDEN_FILES'] = DataBuilder.buildBarChart()
+        DataBuilder.copyFilesToClient()
+
 # App Running Config
 if __name__ == "__main__":
     app.config['TEMPLATES_AUTO_RELOAD']=True
     app.config['DEBUG'] = True
     app.config['ENV'] = 'development'
-    app.run(host='0.0.0.0', debug=True, port=PORT, use_reloader=True)
+    app.run(debug=True, port=PORT, use_reloader=True)
