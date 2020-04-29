@@ -1,4 +1,5 @@
 <!Doctype html>
+<meta charset="utf-8">
 <!--
   Author: Nic Mays
   Course: Data Viz
@@ -14,9 +15,12 @@
         <link href="{{ url_for('static', filename='styles/index.css') }}" rel="stylesheet" />
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>-->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="{{ url_for('static', filename="scripts/indexUtil.js")}} "></script>
+        <script src="{{ url_for('static', filename="scripts/indexUtil.js") }} "></script>
+        <!--<script src="{{ url_for('static', filename="scripts/d3.v4.min.js") }}"></script>-->
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="{{ url_for('static', filename="scripts/scatterplot-Generate.js") }}"></script>
     </head>
 
     <body style="background: #535353">
@@ -49,10 +53,32 @@
 
         <div class="pageSpacer"></div>
 
-        <div class="container-fluid" style="background: #535353">
-            <div class="row justify-content-center">
-                <!-- stuff goes here -->
+        <div class="container body-container mt-4 pt-2">
+            <div class = "row justify-content-center">
+                <div id="scatter-plot-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
+                    <div id='scatter-filter-button-container' class="shadow p-3 mb-5 bg-white rounded">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button id="scatter-200" type="button" class="btn btn-success">Top 200</button>
+                            <button id="scatter-100" type="button" class="btn btn-success">Top 100</button>
+                            <button id="scatter-50" type="button" class="btn btn-success">Top 50</button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div id="my_dataviz"></div>
+                    </div>
+                </div>
+                <div class="pageSpacer"></div>
+
+                <div class="shadow-lg p-3 mb-5 rounded" style="background: #1DB954">
+                    <div class="row justify-content-center">
+                        <div id="my_datacunt"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
+
+
     </body>
 </html>

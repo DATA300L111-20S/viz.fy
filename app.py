@@ -1,5 +1,6 @@
 import json
 from flask import Flask, request, redirect, render_template
+from flask_cors import CORS
 import requests
 from urllib.parse import quote
 import env as config
@@ -11,6 +12,7 @@ from spotiPY import generateRawDataFiles, generateGoldenDataFiles
 # Visit this url to see all the steps, parameters, and expected response.
 
 app = Flask(__name__)
+CORS(app)
 cache = TTLCache(maxsize=10, ttl=86400)
 
 #  Client Keys
