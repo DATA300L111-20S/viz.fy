@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function generateScatter(filterOption, dotSize) {
     //var dataCSV = d3.csv("/static/data/goldTest.csv");
-    document.getElementById('my_dataviz').innerHTML = "";
+    document.getElementById('scatter_plot').innerHTML = "";
     var margin = {top: 30, right: 30, bottom: 50, left: 80},
         width = 1000 - margin.left - margin.right,
         height = 750 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-    var svg = d3.select("#my_dataviz")
+    var svg = d3.select("#scatter_plot")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -32,7 +32,7 @@ function generateScatter(filterOption, dotSize) {
             "translate(" + margin.left + "," + margin.top + ")");
 
 //Read the data
-    d3.csv("/static/data/goldTest.csv", function(data) {
+    d3.json("/static/data/top200TracksD3.json", function(data) {
         data.forEach(function(d) {d.Streams = +d.Streams;}); //Convert things to numbers...because they're numbers...
         data.forEach(function(d) {d.Position = +d.Position;});
         data = data.filter(function(d){return d.Position <= filterOption});
@@ -59,7 +59,7 @@ function generateScatter(filterOption, dotSize) {
 
         // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
         // Its opacity is set to 0: we don't see it by default.
-        var tooltip = d3.select("#my_dataviz")
+        var tooltip = d3.select("#scatter_plot")
             .append("div")
             .style("opacity", 0)
             .attr("class", "tooltip")
