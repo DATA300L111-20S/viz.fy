@@ -15,14 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }, false);
 
-function generateScatter(filterOption, dotSize) {
+function generateScatter(filterOption, dotSize, duration) {
 
     document.getElementById('scatter_plot').innerHTML = "";
-    var margin = {top: 30, right: 30, bottom: 50, left: 80},
-        width = 1000 - margin.left - margin.right,
-        height = 750 - margin.top - margin.bottom;
+    var margin = {top: 30, right: 30, bottom: 50, left: 80};
+    var width = 960 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
 
-    // append the svg object to the body of the page
+    // add svg
     var svg = d3.select("#scatter_plot")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -35,19 +35,22 @@ function generateScatter(filterOption, dotSize) {
         data.forEach(function(d) {d.Streams = +d.Streams;}); //Convert things to numbers...because they're numbers...
         data.forEach(function(d) {d.Position = +d.Position;});
         data = data.filter(function(d){return d.Position <= filterOption});
+
         var max = d3.max(data, function(d) { return d.Streams; });
         var min = d3.min(data, function(d) { return d.Streams; });
         min = min - 10000;
 
-        // x definition
+        // x
         var x = d3.scaleLinear()
-            .domain([0, filterOption])
+            .domain([0, 0])
             .range([ 0, width ]);
+
         svg.append("g")
+            .attr("class", "x_axis")
             .attr("transform", "translate(0," + height + ")")
             .call(d3.axisBottom(x));
 
-        // y definition
+        // y
         var y = d3.scaleLinear()
             .domain([min, max])
             .range([ height, 0]);
@@ -64,7 +67,7 @@ function generateScatter(filterOption, dotSize) {
             .style("border-width", "1px")
             .style("border-radius", "5px");
 
-        // Add dots
+        // append dots and add functions
         svg.append('g')
             .selectAll("dot")
             .data(data)
@@ -76,8 +79,8 @@ function generateScatter(filterOption, dotSize) {
             .style("fill", "#1DB954")
             .style("stroke", "black")   //After stroke add functions for a tool tip
             .on('mouseover', function(d) {
-                d3.select('#tooltip').html("<p>Song Facts:<br>"+d.Track_Name+
-                    " by "+d.Artist+"<br>Position #"+d.Position+"<br>Streams: "+d.Streams+"</p>");
+                d3.select('#tooltip').html("<p>Song Facts:<br>\""+d.Track_Name+
+                    "\" by "+d.Artist+"<br>Position #"+d.Position+"<br>Streams: "+d.Streams+"</p>");
                 d3.select('#tooltip').transition().duration(200).style('opacity', 1);
             })
             .on('mouseout', function() {
@@ -96,13 +99,6 @@ function generateScatter(filterOption, dotSize) {
         .style("text-decoration", "underline")
         .text(`Streams vs Top ${filterOption} Position`);
 
-        // text label for the x axis
-        svg.append("text")
-        .attr("x", width/2 )
-        .attr("y", 720 )
-        .style("text-anchor", "middle")
-        .text("Position");
-
         // text label for the y axis
         svg.append("text")
           .attr("transform", "rotate(-90)")
@@ -111,5 +107,21 @@ function generateScatter(filterOption, dotSize) {
           .attr("dy", "1em")
           .style("text-anchor", "middle")
           .text("# of Streams");
-    })
+
+        // new x
+        x.domain([0, filterOption])
+        svg.select(".x_axis")
+            .transition()
+            .duration(2000)
+            .attr("opacity", "1")
+            .call(d3.axisBottom(x));
+
+        //animate
+        svg.selectAll("circle")
+            .transition()
+            .delay(function(d,i){return(i*3)})
+            .duration(2000)
+            .attr("cx", function (d) { return x(d.Position); } )
+            .attr("cy", function (d) { return y(d.Streams); } )
+    });
 }
