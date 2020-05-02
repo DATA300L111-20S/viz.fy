@@ -3,13 +3,39 @@
     padding-bottom: 15px;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 #scatter-filter-button-container {
     width: 29%;
 }
 
-/*#scatter-plot-container {
-    position: absolute;
-    width: 90%;
-}*/
+.bar {
+    fill: #5f89ad;
+}
 
+.axis {
+    font-size: 13px;
+}
 
+.axis path, .axis line {
+    fill: none;
+    display: none;
+}
+
+.label {
+    font-size: 13px;
+}
+
+rect {
+    cursor: pointer;
+}
+
+#scatter-filter-button-container {
+    width: 29%;
+}
+
+#audio-cycle-button-container {
+    width: 20%;
+}
