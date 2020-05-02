@@ -21,10 +21,12 @@
         <!--<script src="{{ url_for('static', filename="scripts/d3.v4.min.js") }}"></script>-->
         <script src="https://d3js.org/d3.v4.js"></script>
         <script src="{{ url_for('static', filename="scripts/scatterplot-Generate.js") }}"></script>
+        <script src="{{ url_for('static', filename="scripts/barchart-Generate.js") }}"></script>
+        <script src="{{ url_for('static', filename="scripts/audio-chart-Generate.js") }}"></script>
     </head>
 
     <body style="background: #535353">
-        <nav class="navbar-custom navbar navbar-expand-lg navbar-dark info-color">
+        <nav class="navbar-custom navbar navbar-expand-lg navbar-dark info-color sticky-top">
             <a class="navbar-brand" href="/">Viz.fy's Top 200</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -43,7 +45,29 @@
                     <li class="nav-item">
                         <a class="nav-link waves-effect waves-light" href="/about">
                             About
-                            <span class="sr-only">(current)</span>
+                            <span class="sr-only"></span>
+                        </a>
+                    </li>
+                    &emsp;
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect waves-light" href="#scroll-to-scatter">
+                            Scatter Plot
+                            <span class="sr-only"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect waves-light" href="#bar-chart-container">
+                            Bar Chart
+                            <span class="sr-only"></span>
+                        </a>
+                    </li>
+                    &emsp;
+                    &emsp;
+                    &emsp;
+                    <li class="nav-item" style="float:right;">
+                        <a id="nav-ratio-holder"class="nav-link waves-effect waves-light">
+
+                            <span class="sr-only"></span>
                         </a>
                     </li>
                     <li class="nav-item dropdown"></li>
@@ -51,12 +75,12 @@
             </div>
         </nav>
 
-        <div class="pageSpacer"></div>
+        <div id="scroll-to-scatter" class="pageSpacer"></div>
 
         <div class="container body-container mt-4 pt-2">
             <div class = "row justify-content-center">
                 <div id="scatter-plot-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
-                    <div id='scatter-filter-button-container' class="shadow p-3 mb-5 bg-white rounded">
+                    <div id='scatter-filter-button-container' class="shadow p-3 mb-5 rounded">
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <button id="scatter-200" type="button" class="btn btn-success">Top 200</button>
                             <button id="scatter-100" type="button" class="btn btn-success">Top 100</button>
@@ -64,21 +88,32 @@
                         </div>
                     </div>
                     <div class="row justify-content-center">
-                        <div id="my_dataviz"></div>
+                        <div id="scatter_plot"></div>
                     </div>
                 </div>
+
+                <div id="scroll-to-bar" class="pageSpacer"></div>
+
+                <div id="bar-chart-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
+                    <div class="row justify-content-center">
+                        <div id="bar_chart"></div>
+                    </div>
+                </div>
+
                 <div class="pageSpacer"></div>
 
-                <div class="shadow-lg p-3 mb-5 rounded" style="background: #1DB954">
+                <div id="audio-chart-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
+                    <div id='audio-cycle-button-container' class="shadow p-3 mb-5 rounded">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button id="cycle-btn" type="button" class="btn btn-success">Cycle Audio Feature</button>
+                        </div>
+                    </div>
                     <div class="row justify-content-center">
-                        <div id="my_datacunt"></div>
+                        <div id="audio_chart"></div>
                     </div>
                 </div>
 
             </div>
         </div>
-
-
-
     </body>
 </html>
