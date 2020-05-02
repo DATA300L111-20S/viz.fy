@@ -16,25 +16,25 @@ def buildBarChart():
         artist = ""
         track_id = ""
         artistCount = 0
-        misses=0
+        misses = 0
         accountedForArtist = []
         for tracks in goldenTrackData:
             artist = tracks['Artist']
             track_id = tracks['URL']
-            count = 1
+            artistCount = 1
 
             if artist in accountedForArtist:
                 misses = misses+1
             else:
                 for iterator in goldenTrackData:
                     if iterator['Artist'] == artist and iterator['URL'] != track_id:
-                        count = count + 1
+                        artistCount = artistCount + 1
                 accountedForArtist.append(artist)
-                tracks['Count'] = count
+                tracks['Count'] = artistCount
                 barChartData["Artist_Data"].append(tracks)
 
         with open('top200Histogram.json', 'w') as top200rawJSON_write:
-            top200rawJSON_write.write(json.dumps(barChartData, indent=4))
+            top200rawJSON_write.write(json.dumps(barChartData['Artist_Data'], indent=4))
             top200rawJSON_write.close()
     top200rawJSON_read.close()
 

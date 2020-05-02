@@ -86,9 +86,13 @@ def callback():
     if response_data == {'error': 'invalid_grant', 'error_description': 'Invalid authorization code'}:
         url_args = "&".join(["{}={}".format(key, quote(val)) for key, val in auth_query_parameters.items()])
         auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
-        return redirect(auth_url)
+        return redirect("/")
 
-    access_token = response_data["access_token"]
+    try:
+        access_token = response_data["access_token"]
+    except Exception as e:
+        return redirect("/")
+
 
     # Auth Step 6: Use the access token to access Spotify API
     authorization_header = {"Authorization": "Bearer {}".format(access_token)}
