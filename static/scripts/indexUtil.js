@@ -20,4 +20,5 @@ function bindReloadTimer() {
     }, 1000);
 }
 
+
 window.onload = init();

@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("scatter-50").addEventListener("click", function(){
         generateScatter(50, 6);
     });
+
 }, false);
 
 function generateScatter(filterOption, dotSize, duration) {
@@ -33,7 +34,12 @@ function generateScatter(filterOption, dotSize, duration) {
 
     d3.json("/static/data/top200TracksD3.json", function(data) {
         data.forEach(function(d) {d.Streams = +d.Streams;}); //Convert things to numbers...because they're numbers...
-        data.forEach(function(d) {d.Position = +d.Position;});
+        let counter = 0;
+        data.forEach(function(d) {
+            d.Position = +d.Position;
+            counter++;
+        });
+        document.getElementById("nav-ratio-holder").innerHTML=`${counter} / 200 Tracks Visualized`
         data = data.filter(function(d){return d.Position <= filterOption});
 
         var max = d3.max(data, function(d) { return d.Streams; });
