@@ -50,14 +50,20 @@
                     </li>
                     &emsp;
                     <li class="nav-item">
-                        <a class="nav-link waves-effect waves-light" href="#scroll-to-scatter">
-                            Scatter Plot
+                        <a class="nav-link waves-effect waves-light" href="#scatter-plot-container">
+                            Streams
                             <span class="sr-only"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link waves-effect waves-light" href="#bar-chart-container">
-                            Bar Chart
+                            Top Artist
+                            <span class="sr-only"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect waves-light" href="#audio-chart-container">
+                            Audio Chart
                             <span class="sr-only"></span>
                         </a>
                     </li>
@@ -66,12 +72,16 @@
                     &emsp;
                     <li class="nav-item" style="float:right;">
                         <a id="nav-ratio-holder"class="nav-link waves-effect waves-light">
-
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect waves-light" href="#" data-toggle="tooltip" data-html="true" title="Some newly released tracks may not have audio features yet, thus aren't visualized" style="font-size:17px">
+                            	?
                             <span class="sr-only"></span>
                         </a>
                     </li>
                     <li class="nav-item dropdown"></li>
-                </ul>
+                </ul>```
             </div>
         </nav>
 
@@ -79,6 +89,20 @@
 
         <div class="container body-container mt-4 pt-2">
             <div class = "row justify-content-center">
+                <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
+                    <p id="intro">Welcome to viz.fy! Visualizations on the Spotify's daily top 200 tracks in the United States.
+                        You can view today's top tracks/download the data set
+                        <a id="here" href="https://spotifycharts.com/regional/us/daily/latest">here.</a> </p>
+                    <p>Music is a huge part of the world's culture, and in the digital age it seems almost random what
+                        will become a top song. We thought to explore today's top music and see if we could make any sense
+                        of today's most praised music.</p>
+                </div>
+                <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
+                    <p> We wanted to take a look at the shape of the 'Streams Curve" by plotting streams against top 200
+                        position. This would give us a look into how drastically having a song in a higher position
+                        would increase a songs exposures / interaction.</p>
+                    <p> Clicking any of the "filter buttons" in the top left will filter the data by the Top 200, Top 100, and Top 50.</p>
+                </div>
                 <div id="scatter-plot-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
                     <div id='scatter-filter-button-container' class="shadow p-3 mb-5 rounded">
                         <div class="btn-group" role="group" aria-label="Basic example">
@@ -91,17 +115,30 @@
                         <div id="scatter_plot"></div>
                     </div>
                 </div>
-
+                <div  style="height: 50px"></div>
                 <div id="scroll-to-bar" class="pageSpacer"></div>
-
+                <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
+                    <p> Now lets look at the top 200's most decorated artists. A "top artist" for viz.fy, is any
+                        artist with more than one song on the top 200 list. The more songs an Artist has on the top 200
+                        its safe to say the more likely they will continute to appear on future top 200 lists. This bar
+                        chart captures these top artists and how many songs they have on today's top 200 list.</p>
+                    <p> Clicking any of the bars will take you to spotify and play you that artists top song,
+                        making it easy for you to discover new music.</p>
+                </div>
                 <div id="bar-chart-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
                     <div class="row justify-content-center">
                         <div id="bar_chart"></div>
                     </div>
                 </div>
 
-                <div class="pageSpacer"></div>
-
+                <div id="scroll-to-audio" class="pageSpacer"></div>
+                <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
+                    <p> Lastly we wanted to present what is present in top songs, through Spotify's audio features.
+                    We plotted the song's audio feature's value versus the song's top 200 position. Also we included a
+                        line of best fit so we could possibly idenfity any trends. If a trend exists its more likely that there's a correlation
+                    between a the value of the audio feature and the song's position.</p>
+                    <p> Click the "cycle audio feature" button to cycle the audio feature we are visualizing.</p>
+                </div>
                 <div id="audio-chart-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
                     <div id='audio-cycle-button-container' class="shadow p-3 mb-5 rounded">
                         <div class="btn-group" role="group" aria-label="Basic example">
