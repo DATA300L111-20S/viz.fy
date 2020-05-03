@@ -32,6 +32,21 @@ rect {
     cursor: pointer;
 }
 
+.blog-post {
+    color: white;
+    position: center;
+    text-align: center;
+    font-size: 20px;
+}
+
+#intro {
+    font-size: 40px;
+}
+
+#here {
+    color: #1DB954;
+}
+
 #scatter-filter-button-container {
     width: 29%;
 }
