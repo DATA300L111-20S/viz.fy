@@ -2,6 +2,18 @@ document.addEventListener('DOMContentLoaded', function() {
     generateBarChart()
 }, false);
 
+
+function colorByNumber(value, average) {
+
+    if(value > average) {
+        return("#ffae4a");
+    }
+
+    else {
+        return("#1DB954");
+    }
+}
+
 function generateBarChart() {
    // set the dimensions and margins of the graph
     var margin = {top: 20, right: 20, bottom: 100, left: 100};
@@ -20,10 +32,27 @@ function generateBarChart() {
 
     d3.json("/static/data/top200Histogram.json", function(data) {
 
-        data.forEach(function(d) {d.Count = +d.Count; });
-        data.forEach(function(d) {d.Position = +d.Position; })
+        data.forEach(function(d) {
+            d.Count = +d.Count;
+            d.Position = +d.Position;
+        });
         data = data.filter(function(d){return d.Count >= 2});
-        data = data.filter(function(d){return d.Position <= 200});
+
+        var counter = 0;
+        var sum = 0;
+        var average = 0;
+
+        data.forEach(function(d) {
+            d.Count = +d.Count;
+            d.Position = +d.Position;
+            counter++;
+            sum += d.Count;
+        });
+
+        average = sum/counter;
+        console.log("avg"+average);
+
+
         data.sort(function (a,b) {return d3.descending(a.Count, b.Count);});
 
         // x
@@ -59,12 +88,20 @@ function generateBarChart() {
             .attr("y", function(d) { return y(d.Count); })
             .attr("width", x.bandwidth())
             .attr("height", function(d) { return height - y(d.Count); })
-            .attr("fill", "#69b3a2")
+            .attr("fill", function(d) { return colorByNumber(d.Count, average); })
             .attr("rx", 4)
             .attr("ry", 5)
 
         rectBar.on("click", function(d) {
             window.open(`https://open.spotify.com/track/${d.URL}`);
         });
+
+        svg.append("text")
+        .attr("id", "bar_chart_title")
+        .attr("x", (width / 2))
+        .attr("y", 10 - (margin.top / 2) )
+        .attr("text-anchor", "middle")
+        .style("font-size", "24px")
+        .text(`Top Artists and # of Songs on the Top 200`);
     });
 }

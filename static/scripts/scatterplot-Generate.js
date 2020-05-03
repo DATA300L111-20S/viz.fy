@@ -21,7 +21,7 @@ function generateScatter(filterOption, dotSize, duration) {
     document.getElementById('scatter_plot').innerHTML = "";
     var margin = {top: 30, right: 30, bottom: 50, left: 80};
     var width = 960 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
+    var height = 450 - margin.top - margin.bottom;
 
     // add svg
     var svg = d3.select("#scatter_plot")
@@ -39,7 +39,11 @@ function generateScatter(filterOption, dotSize, duration) {
             d.Position = +d.Position;
             counter++;
         });
-        document.getElementById("nav-ratio-holder").innerHTML=`${counter} / 200 Tracks Visualized`
+
+
+
+        document.getElementById("nav-ratio-holder").innerHTML=counter + " / 200 Tracks Visualized ";
+
         data = data.filter(function(d){return d.Position <= filterOption});
 
         var max = d3.max(data, function(d) { return d.Streams; });

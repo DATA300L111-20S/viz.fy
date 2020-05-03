@@ -8,7 +8,7 @@ function generateAudioChart() {
 
     var margin = {top: 20, right: 30, bottom: 40, left: 50};
     var width = 960 - margin.left - margin.right;
-    var height = 520 - margin.top - margin.bottom;
+    var height = 450 - margin.top - margin.bottom;
 
     var svg = d3.select("#audio_chart")
       .append("svg")
@@ -110,8 +110,8 @@ d3.json("/static/data/top200TracksD3.json", function(data) {
         .attr("class", "regression")
         .attr("x1", x(lsr[0][0]))
         .attr("y1", y(lsr[1][0]))
-        .attr("x2", x(lsr[0][199]))
-        .attr("y2", y(lsr[1][199]))
+        .attr("x2", x(lsr[0][lsr[0].length-1]))
+        .attr("y2", y(lsr[1][lsr[0].length-1]))
         .style("stroke", "#ffae4a")
         .style("fill", "#ffae4a")
         .style("stroke-width", 2)
@@ -192,13 +192,13 @@ d3.json("/static/data/top200TracksD3.json", function(data) {
             .transition()
             .duration(10)
             .style("opacity", "0");
-
+        console.log('line stuff'+lsr[0].length)
         svg.select("#lsr-line")
             .attr("class", "regression")
             .attr("x1", x(lsr[0][0]))
             .attr("y1", y(lsr[1][0]))
-            .attr("x2", x(lsr[0][199]))
-            .attr("y2", y(lsr[1][199]))
+            .attr("x2", x(lsr[0][lsr[0].length-1]))
+            .attr("y2", y(lsr[1][lsr[0].length-1]))
             .style("stroke", "#ffae4a")
             .style("fill", "#ffae4a")
             .style("stroke-width", 2)
