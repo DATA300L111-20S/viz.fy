@@ -73,11 +73,10 @@ function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
         });
 
 
-
+        //Instead of call to backend just update the nav-bar here
         document.getElementById("nav-ratio-holder").innerHTML=counter + " / 200 Tracks Visualized ";
 
         data = data.filter(function(d){return d.Position <= filterOption});
-
 
         var max = d3.max(data, function(d) { return d.Streams; });
         var min = d3.min(data, function(d) { return d.Streams; });
@@ -151,8 +150,9 @@ function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
           .style("text-anchor", "middle")
           .text("# of Streams");
 
-        // new x
+
         if(isSwitched) {
+            // new x for animation
             x.domain([0, filterOption])
             svg.select(".x_axis")
                 .transition()
@@ -161,6 +161,7 @@ function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
                 .call(d3.axisBottom(x));
         }
 
+        //if we havent switched the filter dont reanimate
         else {
             x.domain([0, filterOption])
             svg.select(".x_axis")
@@ -168,7 +169,7 @@ function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
                 .call(d3.axisBottom(x));
         }
 
-
+        //if the curve has been toggled draw it
         if(toggle_curve) {
             svg.append("path")
                 .datum(data)
@@ -186,7 +187,7 @@ function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
         }
 
         if(isSwitched) {
-            //animate
+            //animate if we switched the filter
             svg.selectAll("circle")
                 .transition()
                 .delay(function (d, i) {
@@ -202,6 +203,7 @@ function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
             isSwitched = false
         }
 
+        //if we havent switched the filter dont reanimate
         else {
             svg.selectAll("circle")
                 .attr("cx", function (d) {
@@ -211,6 +213,6 @@ function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
                     return y(d.Streams);
                 });
         }
-        
+
     });
 }
