@@ -1,22 +1,48 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    generateScatter(200, 4);
+    var toggleCurve = false;
+    var filter = 200;
+    var dot = 4;
+    var curve = 1.5;
+
+    generateScatter(filter, dot, toggleCurve, curve);
 
     document.getElementById("scatter-200").addEventListener("click", function(){
-        generateScatter(200, 4);
+        filter = 200;
+        dot = 4;
+        curve = 2;
+        generateScatter(filter, dot, toggleCurve, curve);
     });
 
     document.getElementById("scatter-100").addEventListener("click", function(){
-        generateScatter(100, 5);
+        filter = 100;
+        dot = 5;
+        curve = 2.5;
+        generateScatter(filter, dot, toggleCurve, curve);
     });
 
     document.getElementById("scatter-50").addEventListener("click", function(){
-        generateScatter(50, 6);
+        filter = 50;
+        dot = 6;
+        curve = 3;
+        generateScatter(filter, dot, toggleCurve, curve);
+    });
+
+    document.getElementById("toggle-curve").addEventListener("click", function(){
+        if(toggleCurve) {
+            toggleCurve = false;
+        }
+
+        else if(!toggleCurve) {
+            toggleCurve = true;
+        }
+
+        generateScatter(filter, dot, toggleCurve, curve);
     });
 
 }, false);
 
-function generateScatter(filterOption, dotSize, duration) {
+function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
 
     document.getElementById('scatter_plot').innerHTML = "";
     var margin = {top: 30, right: 30, bottom: 50, left: 80};
@@ -33,6 +59,7 @@ function generateScatter(filterOption, dotSize, duration) {
             "translate(" + margin.left + "," + margin.top + ")");
 
     d3.json("/static/data/top200TracksD3.json", function(data) {
+
         data.forEach(function(d) {d.Streams = +d.Streams;}); //Convert things to numbers...because they're numbers...
         let counter = 0;
         data.forEach(function(d) {
@@ -45,6 +72,7 @@ function generateScatter(filterOption, dotSize, duration) {
         document.getElementById("nav-ratio-holder").innerHTML=counter + " / 200 Tracks Visualized ";
 
         data = data.filter(function(d){return d.Position <= filterOption});
+
 
         var max = d3.max(data, function(d) { return d.Streams; });
         var min = d3.min(data, function(d) { return d.Streams; });
@@ -126,6 +154,23 @@ function generateScatter(filterOption, dotSize, duration) {
             .attr("opacity", "1")
             .call(d3.axisBottom(x));
 
+
+        if(toggle_curve) {
+            svg.append("path")
+                .datum(data)
+                .attr("fill", "none")
+                .attr("stroke", "#ffae4a")
+                .attr("stroke-width", curve_width)
+                .attr("d", d3.line()
+                    .curve(d3.curveBasis)
+                    .x(function (d) {
+                        return x(d.Position)
+                    })
+                    .y(function (d) {
+                        return y(d.Streams)
+                    }));
+        }
+
         //animate
         svg.selectAll("circle")
             .transition()
@@ -133,5 +178,7 @@ function generateScatter(filterOption, dotSize, duration) {
             .duration(2000)
             .attr("cx", function (d) { return x(d.Position); } )
             .attr("cy", function (d) { return y(d.Streams); } )
+
+
     });
 }
