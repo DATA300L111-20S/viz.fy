@@ -102,6 +102,6 @@ function generateBarChart() {
         .attr("y", 10 - (margin.top / 2) )
         .attr("text-anchor", "middle")
         .style("font-size", "24px")
-        .text(`Top Artists and # of Songs on the Top 200`);
+        .text(`Top Artists and # of their Songs on the Top 200`);
     });
 }
