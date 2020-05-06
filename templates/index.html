@@ -109,6 +109,8 @@
                             <button id="scatter-200" type="button" class="btn btn-success">Top 200</button>
                             <button id="scatter-100" type="button" class="btn btn-success">Top 100</button>
                             <button id="scatter-50" type="button" class="btn btn-success">Top 50</button>
+                            <div class="buttonSpacer"></div>
+                            <button id="toggle-curve" type="button" class="btn btn-success">Toggle smooth curve</button>
                         </div>
                     </div>
                     <div class="row justify-content-center">
@@ -143,14 +145,150 @@
                     <div id='audio-cycle-button-container' class="shadow p-3 mb-5 rounded">
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <button id="cycle-btn" type="button" class="btn btn-success">Cycle Audio Feature</button>
+                            <div class="buttonSpacer"></div>
+                            <button id="description-button" type="button" class="btn btn-success svg" data-toggle="modal" data-target="#modal-acousticness">
+                                ?
+                            </button>
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div id="audio_chart"></div>
                     </div>
                 </div>
-
             </div>
+
+            <!-- Modal Information === START -->
+            <div class="modal fade" id="modal-acousticness" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">acousticness</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            A confidence measure from 0.0 to 1.0 of whether the track is acoustic.
+                            1.0 represents high confidence the track is acoustic.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-danceability" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">danceability</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Danceability describes how suitable a track is for dancing based on a combination
+                            of musical elements including tempo, rhythm stability, beat strength, and overall
+                            regularity. A value of 0.0 is least danceable and 1.0 is most danceable.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-energy" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">energy</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Energy is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and
+                            activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal
+                            has high energy, while a Bach prelude scores low on the scale. Perceptual features
+                            contributing to this attribute include dynamic range, perceived loudness, timbre, onset
+                            rate, and general entropy.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-liveness" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">liveness</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Detects the presence of an audience in the recording. Higher liveness values represent an
+                            increased probability that the track was performed live. A value above 0.8 provides
+                            strong likelihood that the track is live.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-speechiness" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">speechiness</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Speechiness detects the presence of spoken words in a track. The more exclusively
+                            speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the
+                            attribute value. Values above 0.66 describe tracks that are probably made entirely of
+                            spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and
+                            speech, either in sections or layered, including such cases as rap music. Values below 0.33
+                            most likely represent music and other non-speech-like tracks.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modal-valence" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">valence</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track.
+                            Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric),
+                            while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Information === END -->
+
         </div>
     </body>
 </html>

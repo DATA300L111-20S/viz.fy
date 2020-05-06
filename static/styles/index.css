@@ -3,6 +3,11 @@
     padding-bottom: 15px;
 }
 
+.buttonSpacer {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -48,9 +53,9 @@ rect {
 }
 
 #scatter-filter-button-container {
-    width: 29%;
+    width: 50%;
 }
 
 #audio-cycle-button-container {
-    width: 20%;
+    width: 27%;
 }

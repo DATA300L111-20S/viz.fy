@@ -5,6 +5,7 @@
 function generateAudioChart() {
     var globalCycle = 1;
     var globalFeature = ["NULL", "acousticness", "danceability", "energy", "liveness", "speechiness", "valence"]
+    var descButtonModal = document.getElementById('description-button');
 
     var margin = {top: 20, right: 30, bottom: 40, left: 50};
     var width = 960 - margin.left - margin.right;
@@ -134,6 +135,8 @@ d3.json("/static/data/top200TracksD3.json", function(data) {
         else {
             globalCycle = 1;
         }
+
+        descButtonModal.dataset.target = `#modal-${globalFeature[globalCycle]}`;
 
         console.log(globalCycle);
 
