@@ -1,9 +1,11 @@
+var isSwitched = true;
 document.addEventListener('DOMContentLoaded', function() {
 
     var toggleCurve = false;
     var filter = 200;
     var dot = 4;
     var curve = 1.5;
+    isSwitched = true;
 
     generateScatter(filter, dot, toggleCurve, curve);
 
@@ -11,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         filter = 200;
         dot = 4;
         curve = 2;
+        isSwitched = true;
         generateScatter(filter, dot, toggleCurve, curve);
     });
 
@@ -18,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         filter = 100;
         dot = 5;
         curve = 2.5;
+        isSwitched = true;
         generateScatter(filter, dot, toggleCurve, curve);
     });
 
@@ -25,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         filter = 50;
         dot = 6;
         curve = 3;
+        isSwitched = true;
         generateScatter(filter, dot, toggleCurve, curve);
     });
 
@@ -147,12 +152,21 @@ function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
           .text("# of Streams");
 
         // new x
-        x.domain([0, filterOption])
-        svg.select(".x_axis")
-            .transition()
-            .duration(2000)
-            .attr("opacity", "1")
-            .call(d3.axisBottom(x));
+        if(isSwitched) {
+            x.domain([0, filterOption])
+            svg.select(".x_axis")
+                .transition()
+                .duration(2000)
+                .attr("opacity", "1")
+                .call(d3.axisBottom(x));
+        }
+
+        else {
+            x.domain([0, filterOption])
+            svg.select(".x_axis")
+                .attr("opacity", "1")
+                .call(d3.axisBottom(x));
+        }
 
 
         if(toggle_curve) {
@@ -171,14 +185,32 @@ function generateScatter(filterOption, dotSize, toggle_curve, curve_width) {
                     }));
         }
 
-        //animate
-        svg.selectAll("circle")
-            .transition()
-            .delay(function(d,i){return(i*3)})
-            .duration(2000)
-            .attr("cx", function (d) { return x(d.Position); } )
-            .attr("cy", function (d) { return y(d.Streams); } )
+        if(isSwitched) {
+            //animate
+            svg.selectAll("circle")
+                .transition()
+                .delay(function (d, i) {
+                    return (i * 3)
+                })
+                .duration(2000)
+                .attr("cx", function (d) {
+                    return x(d.Position);
+                })
+                .attr("cy", function (d) {
+                    return y(d.Streams);
+                });
+            isSwitched = false
+        }
 
-
+        else {
+            svg.selectAll("circle")
+                .attr("cx", function (d) {
+                    return x(d.Position);
+                })
+                .attr("cy", function (d) {
+                    return y(d.Streams);
+                });
+        }
+        
     });
 }
