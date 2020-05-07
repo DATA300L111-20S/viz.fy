@@ -48,7 +48,7 @@ rect {
     font-size: 40px;
 }
 
-#here {
+.here {
     color: #1DB954;
 }
 
@@ -58,4 +58,10 @@ rect {
 
 #audio-cycle-button-container {
     width: 27%;
+}
+
+.viz-case {
+    border-radius: 25px;
+    border: 2px solid #1DB954;
+    padding: 20px;
 }

@@ -15,10 +15,8 @@
         <link href="{{ url_for('static', filename='styles/index.css') }}" rel="stylesheet" />
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>-->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="{{ url_for('static', filename="scripts/indexUtil.js") }} "></script>
-        <!--<script src="{{ url_for('static', filename="scripts/d3.v4.min.js") }}"></script>-->
         <script src="https://d3js.org/d3.v4.js"></script>
         <script src="{{ url_for('static', filename="scripts/scatterplot-Generate.js") }}"></script>
         <script src="{{ url_for('static', filename="scripts/barchart-Generate.js") }}"></script>
@@ -67,9 +65,9 @@
                             <span class="sr-only"></span>
                         </a>
                     </li>
-                    &emsp;
-                    &emsp;
-                    &emsp;
+                    &emsp; <!-- Tab space -->
+                    &emsp; <!-- Tab space -->
+                    &emsp; <!-- Tab space -->
                     <li class="nav-item" style="float:right;">
                         <a id="nav-ratio-holder"class="nav-link waves-effect waves-light">
                         </a>
@@ -89,72 +87,105 @@
 
         <div class="container body-container mt-4 pt-2">
             <div class = "row justify-content-center">
+
                 <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
-                    <p id="intro">Welcome to viz.fy! Visualizations on the Spotify's daily top 200 tracks in the United States.
+                    <p id="intro">Welcome to viz.fy! Visualizations on Spotify's daily top 200 tracks in the United States.
                         You can view today's top tracks/download the data set
-                        <a id="here" href="https://spotifycharts.com/regional/us/daily/latest">here.</a> </p>
-                    <p>Music is a huge part of the world's culture, and in the digital age it seems almost random what
+                        <a class="here" href="https://spotifycharts.com/regional/us/daily/latest">here.</a> </p>
+                    <p>Music is a huge part of the world's culture, in the digital age it seems almost random what
                         will become a top song. We thought to explore today's top music and see if we could make any sense
-                        of today's most praised music.</p>
+                        of today's hits.</p>
                 </div>
-                <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
-                    <p> We wanted to take a look at the shape of the 'Streams Curve" by plotting streams against top 200
-                        position. This would give us a look into how drastically having a song in a higher position
-                        would increase a songs exposures / interaction.</p>
-                    <p> Clicking any of the "filter buttons" in the top left will filter the data by the Top 200, Top 100, and Top 50.</p>
-                </div>
-                <div id="scatter-plot-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
-                    <div id='scatter-filter-button-container' class="shadow p-3 mb-5 rounded">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button id="scatter-200" type="button" class="btn btn-success">Top 200</button>
-                            <button id="scatter-100" type="button" class="btn btn-success">Top 100</button>
-                            <button id="scatter-50" type="button" class="btn btn-success">Top 50</button>
-                            <div class="buttonSpacer"></div>
-                            <button id="toggle-curve" type="button" class="btn btn-success">Toggle smooth curve</button>
+
+                <div class="viz-case">
+                    <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
+                        <p> We wanted to take a look at the shape of the 'Streams Curve" by plotting a song's streams
+                            against it's position in Spotify's top 200.
+                            This can give us a look into how drastically having a song in a higher position
+                            would increase a song's exposure / interaction.</p>
+                        <p> Clicking any of the numbered buttons in the top left will filter the data by the Top 200 tracks,
+                            Top 100 tracks, and Top 50 tracks. Clicking the "Toggle smooth curve" button will add a smooth
+                            curve to the points, accentuating the shape of the curve. </p>
+                        <p>Hover over any of the data points to reveal facts about the song.</p>
+                    </div>
+
+                    <div id="scatter-plot-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
+                        <div id='scatter-filter-button-container' class="shadow p-3 mb-5 rounded">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button id="scatter-200" type="button" class="btn btn-success">Top 200</button>
+                                <button id="scatter-100" type="button" class="btn btn-success">Top 100</button>
+                                <button id="scatter-50" type="button" class="btn btn-success">Top 50</button>
+                                <div class="buttonSpacer"></div>
+                                <button id="toggle-curve" type="button" class="btn btn-success">Toggle smooth curve</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div id="scatter_plot"></div>
-                    </div>
-                </div>
-                <div  style="height: 50px"></div>
-                <div id="scroll-to-bar" class="pageSpacer"></div>
-                <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
-                    <p> Now lets look at the top 200's most decorated artists. A "top artist" for viz.fy, is any
-                        artist with more than one song on the top 200 list. The more songs an Artist has on the top 200
-                        its safe to say the more likely they will continute to appear on future top 200 lists. This bar
-                        chart captures these top artists and how many songs they have on today's top 200 list.</p>
-                    <p> Clicking any of the bars will take you to spotify and play you that artists top song,
-                        making it easy for you to discover new music.</p>
-                </div>
-                <div id="bar-chart-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
-                    <div class="row justify-content-center">
-                        <div id="bar_chart"></div>
+                        <div class="row justify-content-center">
+                            <div id="scatter_plot"></div>
+                        </div>
                     </div>
                 </div>
 
-                <div id="scroll-to-audio" class="pageSpacer"></div>
-                <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
-                    <p> Lastly we wanted to present what is present in top songs, through Spotify's audio features.
-                    We plotted the song's audio feature's value versus the song's top 200 position. Also we included a
-                        line of best fit so we could possibly idenfity any trends. If a trend exists its more likely that there's a correlation
-                    between a the value of the audio feature and the song's position.</p>
-                    <p> Click the "cycle audio feature" button to cycle the audio feature we are visualizing.</p>
-                </div>
-                <div id="audio-chart-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
-                    <div id='audio-cycle-button-container' class="shadow p-3 mb-5 rounded">
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button id="cycle-btn" type="button" class="btn btn-success">Cycle Audio Feature</button>
-                            <div class="buttonSpacer"></div>
-                            <button id="description-button" type="button" class="btn btn-success svg" data-toggle="modal" data-target="#modal-acousticness">
-                                ?
-                            </button>
+                <div  style="height: 50px"></div>
+                <div id="scroll-to-bar" class="pageSpacer"></div>
+
+                <div class="viz-case">
+                    <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
+                        <p> Now let's look at the top 200's most decorated artists. Viz.fy defines a "top artist", as any
+                            artist with more than one song on today's top 200 list. The more songs an Artist has on the top 200,
+                            its safe to say the more likely the Artist will continue to appear on future top 200 lists. This bar
+                            chart captures these top artists and how many songs they have on today's top 200 list.</p>
+                        <p> Clicking any of the bars will take you to Spotify and play you that artist's top song,
+                            making it easy for you to discover new music.</p>
+                        <p>Orange bars specify a Artist who has an above average amount of songs on today's top 200
+                            list among top artists. Green bars are below the average among top artists. The average is
+                            dynamically calculated based on today's data.</p>
+                    </div>
+
+                    <div id="bar-chart-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
+                        <div class="row justify-content-center">
+                            <div id="bar_chart"></div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div id="audio_chart"></div>
+                </div>
+
+                <div  style="height: 50px"></div>
+                <div id="scroll-to-audio" class="pageSpacer"></div>
+
+                <div class="viz-case">
+                    <div class="p-3 mb-5 rounded blog-post " style="background: #535353;">
+                        <p> Lastly we wanted to present what is present in top songs through Spotify's audio features.
+                            Spotify collects certain data on certain aspects of each track, these features are the
+                            "acousticness", "danceability", "energy", "liveness", "speechiness" and "valence" of the song.
+                            Further information on Spotify's audio features can be found
+                            <a class="here" href="https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/">here.</a>
+                            We plotted the song's respective audio feature value versus the song's top 200 position.
+                            Also we included a line of best fit so we could possibly identify any trends.
+                            If a trend exists, its more likely that there's a correlation
+                            between the value of the audio feature and the song's position.</p>
+                        <p> Click the "Cycle Audio Feature" button to change the input variable of the audio feature we
+                            are visualizing.</p>
+                        <p> Click the "?" button for a description of the audio feature defined by Spotify.</p>
+                    </div>
+
+                    <div id="audio-chart-container" class="shadow-lg p-3 mb-5 rounded" style="background: #ffffff;">
+                        <div id='audio-cycle-button-container' class="shadow p-3 mb-5 rounded">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button id="cycle-btn" type="button" class="btn btn-success">Cycle Audio Feature</button>
+                                <div class="buttonSpacer"></div>
+                                <button id="description-button" type="button" class="btn btn-success svg" data-toggle="modal" data-target="#modal-acousticness">
+                                    ?
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div id="audio_chart"></div>
+                        </div>
                     </div>
                 </div>
+
+                <div  style="height: 50px"></div>
+                <div id="scroll-to-bar" class="pageSpacer"></div>
+
             </div>
 
             <!-- Modal Information === START -->
